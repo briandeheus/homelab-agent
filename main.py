@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-
+import logging
 from lib.git import get_short_commit_hash
 from lib.system import (
     get_cpu_usage,
@@ -11,6 +11,11 @@ from lib.system import (
 )
 
 app = Flask(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s][%(levelname)s][%(name)s]: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 
 @app.route("/")

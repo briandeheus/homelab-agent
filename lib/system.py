@@ -1,15 +1,18 @@
 import os
 import subprocess
-
+import logging
 import psutil
+
+log = logging.getLogger(__name__)
 
 
 # Function to get the current temperature
 def get_temperature():
     try:
-        temp = subprocess.check_output(["vcgencmd", "measure_temp"]).decode()
+        temp = subprocess.check_output(["sudo", "vcgencmd", "measure_temp"]).decode()
         return float(temp.split("=")[1].split("'")[0])  # Extract temperature
     except Exception as e:
+        log.error("Failed to get temperature from vcgencmd: %s", e)
         return {"temp": 0}
 
 
