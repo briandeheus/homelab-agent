@@ -21,8 +21,7 @@ set -e
 cd ~/live
 
 echo "Checking out 'main' branch..."
-git fetch origin main
-git checkout main
+git pull origin main
 
 python3 -m venv venv
 source venv/bin/activate
