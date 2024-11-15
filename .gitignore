@@ -1,0 +1,14 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.env/
+
+# PyCharm project files
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
