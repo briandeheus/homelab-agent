@@ -29,30 +29,30 @@ set -e
 cd ~
 
 # Create the "live" directory
-info "Creating 'live' directory..."
+echo "Creating 'live' directory..."
 mkdir -p ~/live
 cd ~/live
 
 # Initialize git and set up the repository
-info "Initializing git repository..."
+echo "Initializing git repository..."
 git init
-git remote add origin git@github.com:briandeheus/homelab-agent.git
+git remote add origin https://github.com/briandeheus/homelab-agent.git
 
-info "Checking out 'main' branch..."
+echo "Checking out 'main' branch..."
 git fetch origin main
 git checkout main
 
 # Set up the virtual environment
-info "Creating virtual environment..."
+echo "Creating virtual environment..."
 python3 -m venv venv
 source venv/bin/activate
 
-info "Installing requirements..."
+echo "Installing requirements..."
 if [ -f requirements.txt ]; then
     pip install --upgrade pip
     pip install -r requirements.txt
 else
-    error "requirements.txt not found in repository."
+    echo "requirements.txt not found in repository."
 fi
 EOF
 
