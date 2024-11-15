@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 import psutil
@@ -16,7 +17,7 @@ def get_temperature():
 def get_cpu_usage():
     try:
         return {
-            "percent": psutil.cpu_percent(interval=1)
+            "percent": psutil.cpu_percent(interval=0.01)
         }  # Returns CPU usage in percentage
     except Exception as e:
         return f"Error getting CPU usage: {e}"
@@ -27,9 +28,8 @@ def get_memory_usage():
     try:
         mem = psutil.virtual_memory()
         return {
-            "total": mem.total / (1024**2),  # Convert to MB
-            "used": mem.used / (1024**2),  # Convert to MB
-            "percent": mem.percent,  # Percentage used
+            "total": round(mem.total / (1024**2), 2),
+            "used": round(mem.used / (1024**2), 2),
         }
     except Exception as e:
         return f"Error getting memory usage: {e}"
@@ -39,6 +39,31 @@ def get_memory_usage():
 def get_network_usage():
     try:
         net = psutil.net_io_counters()
-        return {"bytes_sent": net.bytes_sent, "bytes_recv": net.bytes_recv}
+        return {
+            "sent": round(net.bytes_sent / (1024**2), 2),
+            "recv": round(net.bytes_recv / (1024**2), 2),
+        }
     except Exception as e:
         return f"Error getting network usage: {e}"
+
+
+def get_hostname():
+    return os.uname()[1]
+
+
+def get_uptime():
+    try:
+        # Read the system uptime from /proc/uptime
+        with open("/proc/uptime", "r") as f:
+            uptime_seconds = float(f.readline().split()[0])
+
+        # Calculate days, hours, minutes, and seconds
+        days = int(uptime_seconds // 86400)
+        hours = int((uptime_seconds % 86400) // 3600)
+        minutes = int((uptime_seconds % 3600) // 60)
+        seconds = int(uptime_seconds % 60)
+
+        # Return as a formatted string
+        return f"{days}d {hours}h {minutes}m {seconds}s"
+    except Exception as e:
+        return f"Error getting uptime: {e}"

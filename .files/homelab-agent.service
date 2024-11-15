@@ -1,0 +1,12 @@
+[Unit]
+Description=Brian's Homelab Agent
+After=network.target
+
+[Service]
+User=homelab-agent
+Group=homelab-agent
+WorkingDirectory=/home/homelab-agent/live/
+ExecStart=/home/homelab-agent/live/venv/bin/gunicorn -w 4 -b 0.0.0.0:1337 app:app
+
+[Install]
+WantedBy=multi-user.target
